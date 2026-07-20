@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
-import "./globals.css";
+import { Inter } from "next/font/google";
 import { SmoothScrolling } from "@/components/providers/smooth-scrolling";
+import CustomCursor from "@/components/ui/cursor";
+import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Premium Travel | Cinematic Journeys",
-  description: "Experience the world with our premium travel packages.",
+  title: "Premium Travel | Your Journey Begins",
+  description: "Experience the world's most luxurious destinations.",
 };
 
 export default function RootLayout({
@@ -26,11 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${outfit.variable} antialiased`}
-    >
-      <body className="min-h-screen flex flex-col font-sans bg-offwhite text-text-main">
+    <html lang="en">
+      <body className={`${inter.variable} font-sans cursor-none`}>
+        {/* Global Premium Custom Cursor */}
+        <CustomCursor />
+        
+        {/* The top JourneyProgress bar has been removed from here */}
+
         <SmoothScrolling>
           {children}
         </SmoothScrolling>

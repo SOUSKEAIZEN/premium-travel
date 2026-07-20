@@ -1,82 +1,116 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-export function Cursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [clicked, setClicked] = useState(false);
-  const [linkHovered, setLinkHovered] = useState(false);
-  const [hidden, setHidden] = useState(true);
+type HoverState = "default" | "button" | "card" | "image" | "link";
+
+export default function CustomCursor() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [hoverState, setHoverState] = useState<HoverState>("default");
+  const [isClicked, setIsClicked] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const addEventListeners = () => {
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseenter", onMouseEnter);
-      document.addEventListener("mouseleave", onMouseLeave);
-      document.addEventListener("mousedown", onMouseDown);
-      document.addEventListener("mouseup", onMouseUp);
-    };
-
-    const removeEventListeners = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseenter", onMouseEnter);
-      document.removeEventListener("mouseleave", onMouseLeave);
-      document.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mouseup", onMouseUp);
-    };
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    setIsVisible(true);
 
     const onMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      setHidden(false);
-    };
-
-    const onMouseDown = () => setClicked(true);
-    const onMouseUp = () => setClicked(false);
-    const onMouseLeave = () => setHidden(true);
-    const onMouseEnter = () => setHidden(false);
-
-    const handleLinkHoverEvents = () => {
-      document.querySelectorAll("a, button, input, textarea, [data-cursor='hover']").forEach((el) => {
-        el.addEventListener("mouseenter", () => setLinkHovered(true));
-        el.addEventListener("mouseleave", () => setLinkHovered(false));
+      // Use requestAnimationFrame for 60fps performance
+      requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
       });
     };
 
-    addEventListeners();
-    handleLinkHoverEvents();
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      
+      if (target.tagName.toLowerCase() === "img" || target.closest('[data-cursor="image"]')) {
+        setHoverState("image");
+      } else if (target.classList.contains("glass-card") || target.closest(".glass-card")) {
+        setHoverState("card");
+      } else if (target.tagName.toLowerCase() === "button" || target.closest("button")) {
+        setHoverState("button");
+      } else if (target.tagName.toLowerCase() === "a" || target.closest("a")) {
+        setHoverState("link");
+      } else {
+        setHoverState("default");
+      }
+    };
+
+    const onMouseDown = () => setIsClicked(true);
+    const onMouseUp = () => setIsClicked(false);
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
 
     return () => {
-      removeEventListeners();
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseover", onMouseOver);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
     };
   }, []);
 
-  if (typeof navigator !== "undefined" && navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
-    return null;
-  }
+  if (!isVisible) return null;
+
+  // Animation variants based on state
+  const ringVariants = {
+    default: { scale: 1, backgroundColor: "rgba(212, 175, 55, 0)", borderColor: "rgba(31, 94, 69, 0.3)" },
+    button: { scale: 1.5, backgroundColor: "rgba(212, 175, 55, 0.1)", borderColor: "rgba(212, 175, 55, 0.8)" },
+    card: { scale: 1.2, backgroundColor: "rgba(255, 255, 255, 0.05)", borderColor: "rgba(212, 175, 55, 0.4)", filter: "blur(1px)" },
+    image: { scale: 3.5, backgroundColor: "rgba(31, 94, 69, 0.85)", borderColor: "rgba(31, 94, 69, 0)" },
+    link: { scale: 0.5, backgroundColor: "rgba(212, 175, 55, 0)", borderColor: "rgba(212, 175, 55, 1)" },
+  };
+
+  const dotVariants = {
+    default: { scale: 1, backgroundColor: "#1F5E45" }, // Primary Forest Green
+    button: { scale: 1.5, backgroundColor: "#D4AF37" }, // Gold
+    card: { scale: 0.8, backgroundColor: "#D4AF37" },
+    image: { scale: 0, opacity: 0 },
+    link: { scale: 0, opacity: 0 },
+  };
 
   return (
-    <>
+    <div className="pointer-events-none fixed inset-0 z-[9999]">
+      {/* Center Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-forest rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="absolute top-0 left-0 w-2 h-2 rounded-full shadow-[0_0_8px_rgba(212,175,55,0.6)] origin-center"
         animate={{
-          x: position.x - 8,
-          y: position.y - 8,
-          scale: clicked ? 0.8 : linkHovered ? 2.5 : 1,
-          opacity: hidden ? 0 : 1,
+          x: mousePos.x - 4,
+          y: mousePos.y - 4,
+          ...(dotVariants[hoverState] as any)
         }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+        transition={{ type: "tween", ease: "backOut", duration: 0.2 }}
       />
+      
+      {/* Outer Ring / Interaction Container */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-forest/50 rounded-full pointer-events-none z-[9998]"
+        className="absolute top-0 left-0 w-8 h-8 border-[1.5px] rounded-full flex items-center justify-center origin-center backdrop-blur-[1px]"
         animate={{
-          x: position.x - 20,
-          y: position.y - 20,
-          scale: clicked ? 1.2 : linkHovered ? 1.5 : 1,
-          opacity: hidden ? 0 : linkHovered ? 0 : 1,
+          x: mousePos.x - 16,
+          y: mousePos.y - 16,
+          scale: isClicked ? 0.8 : ringVariants[hoverState].scale,
+          backgroundColor: ringVariants[hoverState].backgroundColor,
+          borderColor: ringVariants[hoverState].borderColor,
         }}
-        transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.5 }}
-      />
-    </>
+        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+      >
+        <AnimatePresence>
+          {hoverState === "image" && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="text-white text-[8px] font-heading font-bold tracking-widest uppercase"
+            >
+              Explore
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }

@@ -1,12 +1,39 @@
 "use client";
 
-import { motion } from "framer-motion";
-// Removed brand icons from lucide-react (not available in v1+)
+import { useRef, useState, useEffect } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { X } from "lucide-react";
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  
+  const isInView = useInView(footerRef, { once: true, amount: 0.3 });
+  const [showBadge, setShowBadge] = useState(false);
+  const [badgeDismissed, setBadgeDismissed] = useState(false);
+
+  // 1. Show badge 1.5s after scrolling to the footer
+  useEffect(() => {
+    if (isInView && !badgeDismissed) {
+      const timer = setTimeout(() => setShowBadge(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isInView, badgeDismissed]);
+
+  // 2. NEW: Auto-dismiss the badge 2 seconds after it appears
+  useEffect(() => {
+    if (showBadge) {
+      const timer = setTimeout(() => {
+        setShowBadge(false);
+        setBadgeDismissed(true);
+      }, 2000);
+      
+      // Cleanup timer if the user manually clicks close before 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [showBadge]);
+
   return (
-    <footer className="relative bg-[#1B1B1B] text-white/70 pt-32 pb-12 overflow-hidden z-40">
-      {/* Forcing the Rich Charcoal background so the white text is perfectly visible */}
+    <footer ref={footerRef} className="relative bg-[#1B1B1B] text-white/70 pt-32 pb-12 overflow-hidden z-40">
       
       {/* Animated Top Wave/Border */}
       <motion.div 
@@ -18,7 +45,6 @@ export default function Footer() {
       <div className="max-w-[1400px] mx-auto px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           
-          {/* Brand */}
           <div className="col-span-1 md:col-span-1">
             <h3 className="font-heading font-bold text-2xl tracking-widest text-white mb-6">
               LUXE<span className="text-[#D4AF37]">.</span>
@@ -28,7 +54,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links */}
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-sm">Navigation</h4>
             <ul className="space-y-3 text-sm">
@@ -48,7 +73,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-sm">Newsletter</h4>
             <p className="text-sm mb-4">Curated inspiration delivered to your inbox.</p>
@@ -61,7 +85,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm">© {new Date().getFullYear()} Luxe Travel. All rights reserved.</p>
           
@@ -78,6 +101,40 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Secret Explorer Badge Easter Egg */}
+      <AnimatePresence>
+        {showBadge && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8, x: 50 }}
+            className="fixed bottom-6 right-6 z-[100] glass-card bg-[#1B1B1B]/80 backdrop-blur-xl border border-[#D4AF37]/40 p-4 rounded-card shadow-2xl flex items-center gap-4 group"
+          >
+            <div className="text-3xl filter drop-shadow-md group-hover:scale-110 transition-transform duration-300">
+              🏆
+            </div>
+            <div className="pr-6">
+              <h4 className="font-heading font-bold text-white text-sm uppercase tracking-wider mb-0.5">
+                Explorer Badge
+              </h4>
+              <p className="text-xs text-white/60">
+                You reached the end of the journey!
+              </p>
+            </div>
+            
+            <button 
+              onClick={() => {
+                setShowBadge(false);
+                setBadgeDismissed(true);
+              }}
+              className="absolute top-2 right-2 text-white/40 hover:text-white transition-colors"
+            >
+              <X size={14} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 }

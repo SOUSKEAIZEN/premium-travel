@@ -1,36 +1,76 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ChevronDown, Cloud, Bird } from "lucide-react";
+import PremiumVehicle from "../ui/premium-vehicle";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Easter Egg States
+  const [isMoon, setIsMoon] = useState(false);
+  const [birdScared, setBirdScared] = useState(false);
+  const [isHonking, setIsHonking] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // Parallax transforms for depth
   const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const yMid = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const yText = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
   const scaleText = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  return (
-    <section ref={containerRef} className="relative h-screen overflow-hidden bg-background flex items-center justify-center">
-      {/* LAYER 1: SKY & SUN (Background) */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
-        {/* Glowing Sun */}
-        <motion.div 
-          animate={{ scale: [1, 1.05, 1], opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] right-[20%] w-32 h-32 bg-accent/40 rounded-full blur-2xl"
-        />
-        <div className="absolute top-[20%] right-[22%] w-16 h-16 bg-accent rounded-full shadow-[0_0_60px_rgba(212,175,55,0.6)]" />
+  // Double Click Horn Sound Engine
+  const playHorn = () => {
+    if (isHonking) return;
+    setIsHonking(true);
+    
+    try {
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      const playBeep = (timeOffset: number) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "square";
+        osc.frequency.setValueAtTime(350, ctx.currentTime + timeOffset);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime + timeOffset);
+        osc.start(ctx.currentTime + timeOffset);
+        osc.stop(ctx.currentTime + timeOffset + 0.15);
+      };
 
-        {/* Drifting Clouds */}
+      playBeep(0);
+      playBeep(0.2);
+    } catch (e) {
+      console.log("Audio not supported");
+    }
+
+    setTimeout(() => setIsHonking(false), 1500);
+  };
+
+  return (
+    <section ref={containerRef} className="relative h-screen overflow-hidden bg-background flex items-center justify-center transition-colors duration-1000">
+      
+      {/* LAYER 1: SKY & SUN/MOON */}
+      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
+        <div className="absolute inset-0 pointer-events-auto">
+          <motion.div 
+            onClick={() => setIsMoon(!isMoon)}
+            animate={{ scale: [1, 1.05, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className={`absolute top-[15%] right-[20%] w-32 h-32 rounded-full blur-2xl cursor-pointer transition-colors duration-1000 ${isMoon ? 'bg-slate-300/40' : 'bg-accent/40'}`}
+          />
+          <div 
+            onClick={() => setIsMoon(!isMoon)}
+            className={`absolute top-[20%] right-[22%] w-16 h-16 rounded-full cursor-pointer transition-all duration-1000 ${isMoon ? 'bg-slate-100 shadow-[0_0_60px_rgba(241,245,249,0.8)]' : 'bg-accent shadow-[0_0_60px_rgba(212,175,55,0.6)]'}`} 
+          />
+        </div>
+
         <motion.div 
           animate={{ x: ["-10vw", "110vw"] }} 
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
@@ -50,60 +90,77 @@ export default function Hero() {
       {/* LAYER 2: BIRDS */}
       <motion.div style={{ y: yMid }} className="absolute inset-0 pointer-events-none z-10">
         <motion.div
-           animate={{ x: ["-10vw", "110vw"], y: [0, -20, 10, -10, 0] }}
+           animate={{ x: ["-10vw", "110vw"] }}
            transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
-           className="absolute top-[30%] left-0 flex gap-6 text-dark/30"
+           className="absolute top-[30%] left-0 pointer-events-auto"
         >
-           <Bird size={24} strokeWidth={1.5} />
-           <Bird size={18} strokeWidth={1.5} className="mt-6" />
+           <motion.div
+             onClick={() => setBirdScared(true)}
+             animate={birdScared ? { y: -200, x: 100, opacity: 0, rotate: 25 } : { y: [0, -20, 10, -10, 0] }}
+             transition={birdScared ? { duration: 1.5, ease: "easeOut" } : { duration: 25, repeat: Infinity, ease: "linear" }}
+             className="flex gap-6 text-dark/30 cursor-pointer hover:text-dark transition-colors p-4"
+             title="Click to scare birds"
+           >
+             <Bird size={24} strokeWidth={1.5} />
+             <Bird size={18} strokeWidth={1.5} className="mt-6" />
+           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* LAYER 3: MOUNTAINS (Midground) */}
+      {/* LAYER 3: MOUNTAINS */}
       <motion.div style={{ y: yMid }} className="absolute bottom-[20%] w-full h-[50vh] pointer-events-none flex items-end justify-center overflow-hidden z-10">
-        {/* Distant Mountain SVG */}
-        <svg viewBox="0 0 1440 320" className="absolute bottom-0 w-[150%] min-w-[1440px] opacity-15 text-primary" fill="currentColor" preserveAspectRatio="none">
+        <svg viewBox="0 0 1440 320" className={`absolute bottom-0 w-[150%] min-w-[1440px] transition-opacity duration-1000 ${isMoon ? 'opacity-30' : 'opacity-15'} text-primary`} fill="currentColor" preserveAspectRatio="none">
           <path d="M0,224L60,197.3C120,171,240,117,360,122.7C480,128,600,192,720,213.3C840,235,960,213,1080,176C1200,139,1320,85,1380,58.7L1440,32L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
         </svg>
-        {/* Foreground Mountain SVG */}
-        <svg viewBox="0 0 1440 320" className="absolute bottom-[-10px] w-[120%] min-w-[1440px] opacity-30 text-secondary" fill="currentColor" preserveAspectRatio="none">
+        <svg viewBox="0 0 1440 320" className={`absolute bottom-[-10px] w-[120%] min-w-[1440px] transition-opacity duration-1000 ${isMoon ? 'opacity-50' : 'opacity-30'} text-secondary`} fill="currentColor" preserveAspectRatio="none">
           <path d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,213.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </motion.div>
 
-      {/* LAYER 4: ROAD & CAR (Foreground) */}
-      <div className="absolute bottom-0 w-full h-[25vh] bg-dark/5 border-t border-textMuted/10 flex flex-col justify-end pointer-events-none z-20">
-        {/* Scrolling Road Markings */}
-        <div className="overflow-hidden w-full h-1 mb-12 relative">
+      {/* LAYER 4: ROAD & PREMIUM CAR */}
+      <div className="absolute bottom-0 w-full h-[25vh] bg-transparent flex flex-col justify-end z-20 pointer-events-none">
+        
+        {/* Animated Dashed Line (The Road) */}
+        <div className="absolute bottom-[80px] w-full h-1 overflow-hidden pointer-events-none">
           <motion.div 
             animate={{ x: ["0%", "-50%"] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="w-[200%] absolute top-0 left-0 h-full border-t-[3px] border-dashed border-textMuted/30"
+            className="w-[200%] h-full border-t-[3px] border-dashed border-primary/20"
           />
         </div>
         
-        {/* The Animated Car */}
+        {/* Premium Animated Vehicle (Perfectly sitting on the line) */}
         <motion.div 
+          onDoubleClick={playHorn}
+          title="Double click to honk!"
           initial={{ x: "-50vw" }}
-          animate={{ x: "0vw", y: [0, -1.5, 0] }}
-          transition={{ 
-            x: { duration: 2.5, ease: [0.33, 1, 0.68, 1], delay: 3.5 }, // Drives in after loader finishes
-            y: { duration: 0.4, repeat: Infinity, ease: "easeInOut" } // Constant subtle bounce
-          }}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 w-[72px] h-[22px] bg-dark rounded-t-[10px] rounded-b-[4px] z-20 flex items-center justify-center shadow-xl"
+          animate={{ x: "0vw" }}
+          transition={{ x: { duration: 2.5, ease: [0.33, 1, 0.68, 1], delay: 1.5 } }}
+          className="absolute bottom-[66px] left-1/2 -translate-x-1/2 z-20 cursor-pointer pointer-events-auto"
         >
-           {/* Tail lights */}
-           <div className="absolute left-1.5 top-2 w-1.5 h-1.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.9)]" />
-           <div className="absolute right-1.5 top-2 w-1.5 h-1.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.9)]" />
-           {/* Back Window */}
-           <div className="absolute top-1 w-10 h-2.5 bg-white/20 rounded-[2px] backdrop-blur-sm" />
+           <PremiumVehicle isDriving={true} scale={0.7} />
+
+           {/* Honk Visual */}
+           <AnimatePresence>
+             {isHonking && (
+               <motion.div
+                 initial={{ opacity: 0, y: -20, scale: 0.5 }}
+                 animate={{ opacity: 1, y: -50, scale: 1 }}
+                 exit={{ opacity: 0, y: -60, scale: 0.8 }}
+                 className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-dark text-[12px] font-bold px-3 py-1.5 rounded-lg shadow-lg pointer-events-none whitespace-nowrap z-50"
+               >
+                 BEEP BEEP!
+                 <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 border-t-[6px] border-t-white border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent" />
+               </motion.div>
+             )}
+           </AnimatePresence>
         </motion.div>
       </div>
 
-      {/* LAYER 5: TEXT & CTA (UI) */}
+      {/* LAYER 5: TEXT & CTA */}
       <motion.div 
         style={{ y: yText, scale: scaleText, opacity: opacityText }} 
-        className="relative z-30 text-center px-4 max-w-5xl mx-auto mb-[15vh]"
+        className="relative z-30 text-center px-4 max-w-5xl mx-auto mb-[15vh] pointer-events-none"
       >
         <motion.h1 
           initial={{ opacity: 0, y: 40 }}
@@ -128,7 +185,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 4.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6"
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 pointer-events-auto"
         >
           <button className="px-8 py-4 bg-primary text-background rounded-button hover:bg-dark transition-colors duration-300 font-medium tracking-wide shadow-lg">
             Explore Destinations
@@ -144,7 +201,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 5.5, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30 pointer-events-none"
       >
         <span className="text-[10px] uppercase tracking-[0.3em] text-textMuted font-bold">Scroll</span>
         <motion.div 
