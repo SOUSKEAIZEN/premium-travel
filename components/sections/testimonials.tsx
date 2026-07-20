@@ -1,109 +1,116 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import { Star, Quote } from "lucide-react";
 
-const TESTIMONIALS = [
+const reviews = [
   {
-    id: 1,
-    name: "Sarah Jenkins",
-    role: "Adventure Enthusiast",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=256&auto=format&fit=crop",
-    text: "Lumina transformed my dream of visiting the Swiss Alps into an unforgettable reality. Every detail was meticulously planned, allowing me to simply immerse myself in the beauty of the journey.",
+    name: "Eleanor Ridge",
+    role: "Travel Photographer",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
+    text: "The sheer attention to detail on the Alpine retreat was staggering. Luxe doesn't just book a trip; they orchestrate a masterpiece.",
+    rating: 5,
   },
   {
-    id: 2,
+    name: "Marcus Thorne",
+    role: "Architect",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&auto=format&fit=crop",
+    text: "I've traveled extensively, but the Kyoto Heritage tour completely redefined luxury for me. Seamless, elegant, and deeply authentic.",
+    rating: 5,
+  },
+  {
+    name: "Sophia Rossi",
+    role: "Creative Director",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+    text: "Every transition was effortless. The coastal villa they secured for us was something straight out of a cinematic dream.",
+    rating: 5,
+  },
+  {
     name: "David Chen",
-    role: "Luxury Traveler",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=256&auto=format&fit=crop",
-    text: "The level of service is unparalleled. From private tours in Kyoto to the finest accommodations, Lumina understands what true luxury means. A seamless experience from start to finish.",
+    role: "Executive Chef",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
+    text: "The culinary experiences woven into our deep woods journey were Michelin-level, yet entirely rooted in local nature.",
+    rating: 5,
   },
-  {
-    id: 3,
-    name: "Elena Rodriguez",
-    role: "Photographer",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=256&auto=format&fit=crop",
-    text: "As a photographer, I need access to breathtaking locations at the right time. Lumina's curated itineraries provided exactly that. An absolute masterclass in travel planning.",
-  }
 ];
 
-export function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// Duplicate the array to create a seamless infinite loop
+const duplicatedReviews = [...reviews, ...reviews];
 
-  const next = () => setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-
+export default function Testimonials() {
   return (
-    <section className="py-32 px-6 bg-offwhite relative overflow-hidden">
-      {/* Decorative floating elements */}
+    <section className="relative py-40 bg-background overflow-hidden flex flex-col justify-center">
+      
+      {/* Decorative Floating Background Elements */}
       <motion.div 
-        animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 left-10 text-gold/20"
-      >
-        <Quote className="w-40 h-40" />
-      </motion.div>
+        animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[10%] left-[10%] w-64 h-64 bg-accent/10 rounded-full blur-[80px] pointer-events-none"
+      />
+      <motion.div 
+        animate={{ y: [0, 40, 0], x: [0, -30, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-[10%] right-[10%] w-80 h-80 bg-primary/10 rounded-full blur-[100px] pointer-events-none"
+      />
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-text-main mb-4">
-            Traveler Stories
+      <div className="max-w-[1400px] mx-auto px-8 w-full relative z-10 mb-20 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="font-heading text-4xl md:text-5xl font-bold text-dark mb-4">
+            Words from our <span className="text-primary italic font-serif">Travelers</span>
           </h2>
-          <p className="text-text-muted">Don&apos;t just take our word for it.</p>
-        </div>
+          <p className="text-textMuted text-lg">
+            Don't just take our word for it. Experience the world through their eyes.
+          </p>
+        </motion.div>
+      </div>
 
-        <div className="relative h-[400px] md:h-[300px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: -50, filter: "blur(10px)" }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="absolute inset-0 bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-black/5 flex flex-col justify-center"
+      {/* Infinite Auto-Slider Container */}
+      <div className="relative w-full overflow-hidden flex">
+        {/* Left/Right Fades for cinematic seamless edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-20 pointer-events-none" />
+
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+          className="flex gap-8 px-4 w-max hover:[animation-play-state:paused]" // Pauses on hover
+        >
+          {duplicatedReviews.map((review, index) => (
+            <div 
+              key={index} 
+              className="w-[350px] md:w-[450px] shrink-0 p-8 rounded-card glass-card bg-white/40 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.04)] relative group hover:-translate-y-2 transition-transform duration-500"
             >
-              <Quote className="w-10 h-10 text-forest/20 mb-6" />
-              <p className="text-xl md:text-2xl text-text-main font-light leading-relaxed mb-8">
-                &quot;{TESTIMONIALS[currentIndex].text}&quot;
+              <Quote className="absolute top-6 right-6 text-accent/20 rotate-180" size={64} />
+              
+              <div className="flex gap-1 mb-6">
+                {[...Array(review.rating)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-accent text-accent" />
+                ))}
+              </div>
+              
+              <p className="text-dark/80 text-lg leading-relaxed mb-8 relative z-10">
+                "{review.text}"
               </p>
               
               <div className="flex items-center gap-4">
-                <Image 
-                  src={TESTIMONIALS[currentIndex].image} 
-                  alt={TESTIMONIALS[currentIndex].name}
-                  width={56}
-                  height={56}
-                  className="rounded-full object-cover"
+                <img 
+                  src={review.image} 
+                  alt={review.name} 
+                  className="w-12 h-12 rounded-full object-cover shadow-md"
                 />
                 <div>
-                  <h4 className="font-heading font-bold text-lg text-text-main">
-                    {TESTIMONIALS[currentIndex].name}
-                  </h4>
-                  <p className="text-sm text-text-muted">
-                    {TESTIMONIALS[currentIndex].role}
-                  </p>
+                  <h4 className="font-bold text-dark">{review.name}</h4>
+                  <span className="text-textMuted text-sm">{review.role}</span>
                 </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="flex justify-center gap-4 mt-8">
-          <button 
-            onClick={prev}
-            className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center text-text-main hover:bg-forest hover:text-white hover:border-forest transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={next}
-            className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center text-text-main hover:bg-forest hover:text-white hover:border-forest transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

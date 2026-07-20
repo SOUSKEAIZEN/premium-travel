@@ -1,75 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Mountain, Cloud } from "lucide-react";
 
-export function LoadingScreen() {
-  const [isLoading, setIsLoading] = useState(true);
+export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    // 3-second cinematic sequence
     const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000); // 3-second cinematic loading
-
+      setIsVisible(false);
+      setTimeout(onComplete, 1000); // Wait for exit animation to finish
+    }, 3500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [onComplete]);
 
   return (
     <AnimatePresence>
-      {isLoading && (
+      {isVisible && (
         <motion.div
-          key="loading"
+          key="loader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-          className="fixed inset-0 z-[100] bg-forest flex flex-col items-center justify-center overflow-hidden"
+          exit={{ opacity: 0, y: -50 }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background overflow-hidden"
         >
-          {/* Animated Mountains Background */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none flex items-end justify-center pb-20">
-             <motion.svg
-                viewBox="0 0 100 100"
-                className="w-full max-w-4xl h-auto"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-             >
-               <path d="M10 90 L30 50 L50 80 L70 30 L90 90 Z" fill="none" stroke="currentColor" strokeWidth="2" className="text-gold" />
-             </motion.svg>
+          {/* Animated Environment */}
+          <div className="relative w-64 h-32 mb-8 flex items-end justify-center">
+            {/* Cloud 1 */}
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 20, opacity: 1 }}
+              transition={{ duration: 3, ease: "linear" }}
+              className="absolute top-0 left-4 text-textMuted/30"
+            >
+              <Cloud size={32} />
+            </motion.div>
+
+            {/* Mountains Drawing */}
+            <motion.div
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="text-primary z-10"
+            >
+              <Mountain size={64} strokeWidth={1.5} />
+            </motion.div>
+
+            {/* Road Drawing */}
+            <motion.div
+              className="absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-transparent via-textMain to-transparent"
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+            />
+            
+            {/* Tiny Car Entering */}
+            <motion.div
+              initial={{ x: -150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
+              className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-4 h-4 bg-accent rounded-sm shadow-lg z-20"
+            />
           </div>
 
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative z-10 flex flex-col items-center gap-6"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              <Compass className="w-16 h-16 text-gold" />
-            </motion.div>
-            
-            <div className="text-center overflow-hidden">
-              <motion.h1 
-                initial={{ y: 40 }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                className="text-4xl md:text-6xl font-heading font-bold text-white tracking-widest uppercase"
-              >
-                Lumina
-              </motion.h1>
-            </div>
-            
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="text-gold tracking-widest text-sm uppercase mt-4"
+          {/* Premium Text Reveal */}
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, delay: 1.5, ease: [0.76, 0, 0.24, 1] }}
+              className="font-heading text-2xl tracking-[0.2em] text-textMain uppercase"
             >
               Your Journey Begins
-            </motion.p>
-          </motion.div>
+            </motion.h2>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
