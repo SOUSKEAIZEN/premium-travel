@@ -27,16 +27,16 @@ export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative py-32 bg-background z-40">
-      <div className="max-w-[800px] mx-auto px-8">
+    <section className="relative py-16 md:py-32 bg-background z-40">
+      <div className="max-w-[800px] mx-auto px-4 md:px-8">
         
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="font-heading text-4xl md:text-5xl font-bold text-dark mb-4"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-3 md:mb-4"
           >
             Common <span className="text-primary italic font-serif">Inquiries</span>
           </motion.h2>
@@ -57,13 +57,13 @@ export default function FAQ() {
               >
                 <button
                   onClick={() => setActiveIndex(isActive ? null : index)}
-                  className="w-full flex items-center justify-between p-6 md:p-8 text-left hover:bg-white/50 transition-colors"
+                  className="w-full flex items-center justify-between p-5 md:p-8 text-left hover:bg-white/50 transition-colors"
                 >
-                  <span className={`font-heading text-xl font-bold transition-colors duration-300 ${isActive ? "text-primary" : "text-dark"}`}>
+                  <span className={`font-heading text-lg md:text-xl font-bold transition-colors duration-300 pr-4 ${isActive ? "text-primary" : "text-dark"}`}>
                     {faq.question}
                   </span>
-                  <div className="shrink-0 ml-4 text-accent">
-                    {isActive ? <Minus size={24} /> : <Plus size={24} />}
+                  <div className="shrink-0 text-accent">
+                    {isActive ? <Minus className="w-5 h-5 md:w-6 md:h-6" /> : <Plus className="w-5 h-5 md:w-6 md:h-6" />}
                   </div>
                 </button>
                 
@@ -75,7 +75,7 @@ export default function FAQ() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
                     >
-                      <div className="px-6 md:px-8 pb-8 pt-2 text-textMuted leading-relaxed">
+                      <div className="px-5 md:px-8 pb-6 md:pb-8 pt-0 text-sm md:text-base text-textMuted leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>
