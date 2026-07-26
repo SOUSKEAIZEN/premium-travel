@@ -33,9 +33,15 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${cormorant.variable} font-sans md:cursor-none`}>
         
-        {/* Global Premium Film Grain Overlay */}
+        {/* Global Premium Film Grain Overlay - HARDWARE ACCELERATED */}
         <div 
-          className="pointer-events-none fixed inset-0 z-[9999999] bg-grain mix-blend-multiply" 
+          className="pointer-events-none fixed inset-0 z-[9999] bg-grain mix-blend-multiply" 
+          style={{ 
+            // Forces the browser to put this on a separate GPU layer to prevent scroll repainting
+            transform: "translate3d(0, 0, 0)", 
+            backfaceVisibility: "hidden",
+            willChange: "transform" 
+          }}
           aria-hidden="true" 
         />
 

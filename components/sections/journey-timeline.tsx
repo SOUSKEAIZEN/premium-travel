@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Mountain, Trees, Waves, Building2, Sun, Flag, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import PremiumVehicle from "@/components/ui/premium-vehicle";
 
 const stops = [
@@ -108,6 +109,7 @@ export default function JourneyTimeline() {
            animate={{ y: [0, -20, 0], x: [0, 10, 0] }} 
            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
            className="absolute top-[5%] md:top-[10%] right-[10%] md:right-[15%] w-16 h-24 md:w-24 md:h-32 opacity-40"
+           style={{ willChange: "transform" }}
          >
            <svg viewBox="0 0 24 24" fill="currentColor" className="text-gold" xmlns="http://www.w3.org/2000/svg">
              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 18.25c-1.84-2.5-5.5-8.08-5.5-11.25 0-3.03 2.47-5.5 5.5-5.5s5.5 2.47 5.5 5.5c0 3.17-3.66 8.75-5.5 11.25z"/>
@@ -143,7 +145,10 @@ export default function JourneyTimeline() {
         <div className="relative w-full max-w-[1000px] mx-auto">
           
           {/* THE WINDING ROAD (SVG) - DESKTOP ONLY */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[400px] hidden md:block pointer-events-none z-0">
+          <div 
+            className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[400px] hidden md:block pointer-events-none z-0"
+            style={{ willChange: "transform" }}
+          >
             {/* The structural Bezier Curve driving the visual */}
             <svg className="w-full h-full drop-shadow-2xl" preserveAspectRatio="none" viewBox="0 0 400 3000" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* Road Glow */}
@@ -167,7 +172,8 @@ export default function JourneyTimeline() {
               top: vehicleY,
               x: vehicleX,
               // Transform needed on desktop to center over the swerve point
-              transform: isMobile ? 'none' : 'translateX(-50%)' 
+              transform: isMobile ? 'none' : 'translateX(-50%)',
+              willChange: "transform, top"
             }}
           >
              {/* Swiping effect container for mobile override */}
@@ -200,18 +206,21 @@ export default function JourneyTimeline() {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     className={`w-full md:w-[45%] ${isEven ? "md:pr-10" : "md:pl-10"}`}
+                    style={{ willChange: "transform, opacity" }}
                   >
                     <div className="group flex flex-col sm:flex-row glass-card rounded-[24px] overflow-hidden hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(29,29,29,0.12)] transition-all duration-500 ease-out cursor-pointer">
                       
-                      {/* Image Preview (Left side) */}
-                      <div className="w-full sm:w-2/5 h-36 sm:h-auto relative overflow-hidden">
-                        <img 
+                      {/* Image Preview (Left side) - Migrated to Next.js Image */}
+                      <div className="w-full sm:w-2/5 h-48 sm:h-auto relative overflow-hidden flex-shrink-0">
+                        <Image 
                           src={stop.image} 
                           alt={stop.location}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s] ease-[0.16,1,0.3,1]"
+                          fill
+                          sizes="(max-w-768px) 100vw, 33vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-[1.5s] ease-[0.16,1,0.3,1]"
                         />
                         {/* Cinematic Gradient Overlay on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 z-10">
                            <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-offwhite">
                              {stop.icon}
                            </div>

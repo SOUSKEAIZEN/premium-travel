@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Clock, Star, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const destinations = [
@@ -84,13 +85,16 @@ export default function Destinations() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 1, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="group relative h-[480px] md:h-[540px] rounded-[32px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.4)]"
+              style={{ willChange: "transform, box-shadow" }} // Force GPU Layering
             >
-              {/* Background Image with Hover Zoom */}
+              {/* Background Image with Hover Zoom - Optimized with Next/Image */}
               <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <img 
+                <Image 
                   src={dest.image} 
                   alt={dest.title}
-                  className="w-full h-full object-cover transition-transform duration-[1.2s] ease-[0.16,1,0.3,1] group-hover:scale-105"
+                  fill
+                  sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-[1.2s] ease-[0.16,1,0.3,1] group-hover:scale-105"
                 />
               </div>
               

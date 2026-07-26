@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Target, Eye } from "lucide-react";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -12,11 +13,12 @@ export default function About() {
           
           {/* Left: Animated Imagery */}
           <div className="w-full lg:w-1/2 relative h-[450px] md:h-[650px] flex items-center justify-center">
-            {/* Decorative Background Blob - Softened for luxury */}
+            {/* Decorative Background Blob - Hardware Accelerated */}
             <motion.div 
               animate={{ rotate: 360 }}
               transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
               className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-forest/5 rounded-full blur-[80px] md:blur-[100px]"
+              style={{ willChange: "transform" }}
             />
 
             {/* Main Image */}
@@ -26,11 +28,14 @@ export default function About() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-[95%] h-[95%] md:w-[85%] md:h-[85%] rounded-[32px] overflow-hidden shadow-[0_24px_64px_rgba(29,29,29,0.15)] z-10"
+              style={{ willChange: "transform, opacity" }}
             >
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1421&auto=format&fit=crop" 
                 alt="Travelers exploring"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-w-768px) 100vw, 50vw"
+                className="object-cover"
               />
               {/* Premium Cinematic Color Grade Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal/30 via-transparent to-transparent mix-blend-multiply" />
@@ -43,16 +48,20 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="absolute -bottom-8 -right-8 w-64 h-64 rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(29,29,29,0.2)] border-[6px] border-offwhite z-20 hidden lg:block"
+              style={{ willChange: "transform, opacity" }}
             >
               <motion.div
                 animate={{ y: [0, -12, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-full"
+                className="w-full h-full relative"
+                style={{ willChange: "transform" }}
               >
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1470&auto=format&fit=crop" 
                   alt="Detailed compass"
-                  className="w-full h-full object-cover scale-110" // Slight scale to prevent edge bleeding during movement
+                  fill
+                  sizes="256px"
+                  className="object-cover scale-110" // Slight scale to prevent edge bleeding during movement
                 />
               </motion.div>
             </motion.div>
@@ -85,6 +94,7 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="group glass-card p-6 md:p-8 rounded-[24px] hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(29,29,29,0.08)] transition-all duration-500 ease-out cursor-default"
+                style={{ willChange: "transform, box-shadow" }}
               >
                 <div className="w-12 h-12 rounded-full bg-forest/10 flex items-center justify-center mb-5 group-hover:bg-forest/20 transition-colors duration-500">
                   <Target className="text-forest w-6 h-6 group-hover:scale-110 transition-transform duration-500 ease-out" strokeWidth={1.5} />
@@ -101,6 +111,7 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="group glass-card p-6 md:p-8 rounded-[24px] hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(29,29,29,0.08)] transition-all duration-500 ease-out cursor-default"
+                style={{ willChange: "transform, box-shadow" }}
               >
                 <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors duration-500">
                   <Eye className="text-gold w-6 h-6 group-hover:scale-110 transition-transform duration-500 ease-out" strokeWidth={1.5} />

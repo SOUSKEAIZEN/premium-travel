@@ -63,10 +63,11 @@ export default function Hero() {
         animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 left-1/4 w-[50vw] h-[50vw] bg-gold/5 rounded-full blur-[120px] pointer-events-none"
+        style={{ willChange: "transform, opacity" }}
       />
 
       {/* LAYER 1: SKY & SUN/MOON */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none">
+      <motion.div style={{ y: yBg, willChange: "transform" }} className="absolute inset-0 w-full h-full pointer-events-none">
         <div className="absolute inset-0 pointer-events-auto">
           {/* Outer Aura */}
           <motion.div 
@@ -74,6 +75,7 @@ export default function Hero() {
             animate={{ scale: [1, 1.05, 1], opacity: [0.6, 0.8, 0.6] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className={`absolute top-[15%] right-[10%] md:right-[20%] w-20 h-20 md:w-32 md:h-32 rounded-full blur-3xl cursor-pointer transition-colors duration-1000 ${isMoon ? 'bg-charcoal/20' : 'bg-gold/40'}`}
+            style={{ willChange: "transform, opacity" }}
           />
           {/* Core Sun/Moon */}
           <div 
@@ -87,6 +89,7 @@ export default function Hero() {
           animate={{ x: ["-10vw", "110vw"] }} 
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           className="absolute top-[25%] left-[-10%] text-charcoal/5 scale-75 md:scale-100"
+          style={{ willChange: "transform" }}
         >
           <Cloud size={140} strokeWidth={0.5} />
         </motion.div>
@@ -94,17 +97,19 @@ export default function Hero() {
           animate={{ x: ["110vw", "-10vw"] }} 
           transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
           className="absolute top-[15%] right-[-10%] text-charcoal/5 scale-75 md:scale-100"
+          style={{ willChange: "transform" }}
         >
           <Cloud size={220} strokeWidth={0.5} />
         </motion.div>
       </motion.div>
 
       {/* LAYER 2: BIRDS */}
-      <motion.div style={{ y: yMid }} className="absolute inset-0 pointer-events-none z-10">
+      <motion.div style={{ y: yMid, willChange: "transform" }} className="absolute inset-0 pointer-events-none z-10">
         <motion.div
            animate={{ x: ["-10vw", "110vw"] }}
            transition={{ duration: 35, repeat: Infinity, ease: "linear", delay: 2 }}
            className="absolute top-[20%] md:top-[30%] left-0 pointer-events-auto"
+           style={{ willChange: "transform" }}
         >
            <motion.div
              onClick={() => setBirdScared(true)}
@@ -112,6 +117,7 @@ export default function Hero() {
              transition={birdScared ? { duration: 1.5, ease: [0.16, 1, 0.3, 1] } : { duration: 25, repeat: Infinity, ease: "linear" }}
              className="flex gap-4 md:gap-6 text-charcoal/20 cursor-pointer hover:text-charcoal/40 transition-colors p-4 scale-75 md:scale-100"
              title="Click to scare birds"
+             style={{ willChange: "transform, opacity" }}
            >
              <Bird size={24} strokeWidth={1.5} />
              <Bird size={18} strokeWidth={1.5} className="mt-4 md:mt-6" />
@@ -120,7 +126,7 @@ export default function Hero() {
       </motion.div>
 
       {/* LAYER 3: MOUNTAINS */}
-      <motion.div style={{ y: yMid }} className="absolute bottom-[20%] w-full h-[50vh] pointer-events-none flex items-end justify-center overflow-hidden z-10">
+      <motion.div style={{ y: yMid, willChange: "transform" }} className="absolute bottom-[20%] w-full h-[50vh] pointer-events-none flex items-end justify-center overflow-hidden z-10">
         <svg viewBox="0 0 1440 320" className={`absolute bottom-0 w-[200%] md:w-[150%] min-w-[1440px] transition-opacity duration-1000 ${isMoon ? 'opacity-10' : 'opacity-[0.07]'} text-forest`} fill="currentColor" preserveAspectRatio="none">
           <path d="M0,224L60,197.3C120,171,240,117,360,122.7C480,128,600,192,720,213.3C840,235,960,213,1080,176C1200,139,1320,85,1380,58.7L1440,32L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
         </svg>
@@ -138,6 +144,7 @@ export default function Hero() {
             animate={{ x: ["0%", "-50%"] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
             className="w-[200%] h-full border-t-[2px] md:border-t-[3px] border-dashed border-charcoal/15"
+            style={{ willChange: "transform" }}
           />
         </div>
         
@@ -149,6 +156,7 @@ export default function Hero() {
           animate={{ x: "0vw" }}
           transition={{ x: { duration: 3, ease: [0.16, 1, 0.3, 1], delay: 1.5 } }}
           className="absolute bottom-[46px] md:bottom-[66px] left-1/2 -translate-x-1/2 z-20 cursor-pointer pointer-events-auto"
+          style={{ willChange: "transform" }}
         >
            <div className="scale-75 md:scale-100 origin-bottom">
              <PremiumVehicle isDriving={true} scale={0.7} />
@@ -163,6 +171,7 @@ export default function Hero() {
                  exit={{ opacity: 0, y: -60, scale: 0.9 }}
                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                  className="absolute -top-6 left-1/2 -translate-x-1/2 bg-offwhite text-charcoal text-[10px] md:text-[12px] font-medium tracking-widest px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-xl pointer-events-none whitespace-nowrap z-50 border border-gold/20"
+                 style={{ willChange: "transform, opacity" }}
                >
                  BEEP BEEP!
                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 border-t-[6px] border-t-offwhite border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent" />
@@ -174,7 +183,7 @@ export default function Hero() {
 
       {/* LAYER 5: TEXT & CTA */}
       <motion.div 
-        style={{ y: yText, scale: scaleText, opacity: opacityText }} 
+        style={{ y: yText, scale: scaleText, opacity: opacityText, willChange: "transform, opacity" }} 
         className="relative z-30 text-center px-6 max-w-5xl mx-auto mb-[15vh] md:mb-[10vh] pointer-events-none w-full"
       >
         <motion.h1 
@@ -222,6 +231,7 @@ export default function Hero() {
         <motion.div 
           animate={{ y: [0, 8, 0] }} 
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          style={{ willChange: "transform" }}
         >
           <ChevronDown className="text-gold" size={20} strokeWidth={1.5} />
         </motion.div>

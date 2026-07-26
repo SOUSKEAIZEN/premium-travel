@@ -9,7 +9,7 @@ export default function CustomCursor() {
   const [hoverState, setHoverState] = useState<HoverState>("default");
   const [isClicked, setIsClicked] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [isDarkBg, setIsDarkBg] = useState(false); // NEW: Tracks if we are over a dark background
+  const [isDarkBg, setIsDarkBg] = useState(false); 
 
   // Framer Motion values for 60FPS performance without React re-renders
   const cursorX = useMotionValue(-100);
@@ -39,7 +39,7 @@ export default function CustomCursor() {
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       
-      // NEW: Detect if the cursor is currently over a dark section (like the footer)
+      // Detect if the cursor is currently over a dark section (like the footer)
       setIsDarkBg(!!target.closest('footer, .bg-charcoal, .bg-dark'));
 
       if (target.tagName?.toLowerCase() === "img" || target.closest('[data-cursor="image"]')) {
@@ -79,20 +79,22 @@ export default function CustomCursor() {
     default: { 
       scale: 1, 
       backgroundColor: "rgba(29, 29, 29, 0)", 
-      borderColor: isDarkBg ? "rgba(250, 248, 244, 0.4)" : "rgba(29, 29, 29, 0.2)" 
+      borderColor: isDarkBg ? "rgba(250, 248, 244, 0.4)" : "rgba(29, 29, 29, 0.2)",
+      filter: "blur(0px)" 
     },
-    button: { scale: 1.5, backgroundColor: "rgba(197, 160, 89, 0.05)", borderColor: "rgba(197, 160, 89, 0.5)" },
+    button: { scale: 1.5, backgroundColor: "rgba(197, 160, 89, 0.05)", borderColor: "rgba(197, 160, 89, 0.5)", filter: "blur(0px)" },
     card: { scale: 1.2, backgroundColor: "rgba(250, 248, 244, 0.1)", borderColor: "rgba(197, 160, 89, 0.3)", filter: "blur(1px)" },
-    image: { scale: 3.5, backgroundColor: "rgba(29, 29, 29, 0.85)", borderColor: "rgba(29, 29, 29, 0)" },
+    image: { scale: 3.5, backgroundColor: "rgba(29, 29, 29, 0.85)", borderColor: "rgba(29, 29, 29, 0)", filter: "blur(0px)" },
     link: { 
       scale: 0.5, 
       backgroundColor: "rgba(29, 29, 29, 0)", 
-      borderColor: isDarkBg ? "rgba(250, 248, 244, 0.9)" : "rgba(29, 29, 29, 0.8)" 
+      borderColor: isDarkBg ? "rgba(250, 248, 244, 0.9)" : "rgba(29, 29, 29, 0.8)",
+      filter: "blur(0px)" 
     },
   };
 
   const dotVariants = {
-    default: { scale: 1, backgroundColor: isDarkBg ? "#FAF8F4" : "#1D1D1D" }, // Swaps to Offwhite on dark BG
+    default: { scale: 1, backgroundColor: isDarkBg ? "#FAF8F4" : "#1D1D1D" },
     button: { scale: 1.5, backgroundColor: "#C5A059" },
     card: { scale: 0.8, backgroundColor: "#C5A059" },
     image: { scale: 0, opacity: 0 },
@@ -101,22 +103,35 @@ export default function CustomCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden">
-      {/* Center Dot */}
+      {/* Center Dot - Hardware Accelerated */}
       <motion.div
         className="absolute top-0 left-0 w-1.5 h-1.5 rounded-full"
-        style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }}
+        style={{ 
+          x: cursorX, 
+          y: cursorY, 
+          translateX: "-50%", 
+          translateY: "-50%",
+          willChange: "transform" // Force GPU Layering
+        }}
         animate={dotVariants[hoverState] as any}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       />
       
-      {/* Outer Ring */}
+      {/* Outer Ring - Hardware Accelerated & Removed Continuous Blur */}
       <motion.div
-        className="absolute top-0 left-0 w-8 h-8 border-[1px] rounded-full flex items-center justify-center backdrop-blur-[2px]"
-        style={{ x: cursorXSpring, y: cursorYSpring, translateX: "-50%", translateY: "-50%" }}
+        className="absolute top-0 left-0 w-8 h-8 border-[1px] rounded-full flex items-center justify-center"
+        style={{ 
+          x: cursorXSpring, 
+          y: cursorYSpring, 
+          translateX: "-50%", 
+          translateY: "-50%",
+          willChange: "transform" // Force GPU Layering
+        }}
         animate={{
           scale: isClicked ? 0.8 : ringVariants[hoverState].scale,
           backgroundColor: ringVariants[hoverState].backgroundColor,
           borderColor: ringVariants[hoverState].borderColor,
+          filter: ringVariants[hoverState].filter,
         }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
