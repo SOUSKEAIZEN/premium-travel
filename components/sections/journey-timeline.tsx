@@ -167,21 +167,26 @@ export default function JourneyTimeline() {
 
           {/* THE DRIVING CAR */}
           <motion.div
-            className="absolute left-6 md:left-1/2 -translate-y-1/2 z-30 ml-[-5px] md:ml-0"
+            className="absolute left-[44px] md:left-1/2 z-30"
             style={{ 
               top: vehicleY,
               x: vehicleX,
-              // Transform needed on desktop to center over the swerve point
-              transform: isMobile ? 'none' : 'translateX(-50%)',
               willChange: "transform, top"
             }}
           >
-             {/* Swiping effect container for mobile override */}
-             <div className="hidden md:block drop-shadow-xl">
-               <PremiumVehicle isDriving={true} scale={0.75} />
-             </div>
-             <div className="block md:hidden drop-shadow-lg">
-               <PremiumVehicle isDriving={true} scale={0.5} />
+             {/* Absolute centering wrapper so the car perfectly tracks the line */}
+             <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                 
+                 {/* Desktop: Horizontal Swerve */}
+                 <div className="hidden md:block drop-shadow-xl">
+                   <PremiumVehicle isDriving={true} scale={0.75} />
+                 </div>
+                 
+                 {/* Mobile: Rotated 90 degrees to drive DOWN the vertical track */}
+                 <div className="block md:hidden drop-shadow-lg rotate-90">
+                   <PremiumVehicle isDriving={true} scale={0.45} />
+                 </div>
+
              </div>
           </motion.div>
 
