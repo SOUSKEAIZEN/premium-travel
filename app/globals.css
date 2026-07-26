@@ -1,49 +1,64 @@
 @import "tailwindcss";
 
 @theme {
-  --color-forest: #1F5E45;
-  --color-emerald: #2E8B57;
-  --color-gold: #D4AF37;
-  --color-offwhite: #F8F8F5;
-  --color-charcoal: #1B1B1B;
-  --color-text-main: #111111;
-  --color-text-muted: #666666;
+  /* Refined Luxury Color Palette */
+  --color-forest: #1A4D39; /* Deeper, more elegant green */
+  --color-emerald: #236B50;
+  --color-gold: #C5A059; /* Softer, matte luxury gold */
+  --color-offwhite: #FAF8F4; /* Requested warm off-white */
+  --color-charcoal: #1D1D1D; /* Requested warm dark */
+  --color-text-main: #1D1D1D; /* Replaced pure black */
+  --color-text-muted: #737373; /* Warmer, softer contrast gray */
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  /* Fonts - To be injected via layout.tsx */
+  --font-sans: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-serif-primary), ui-serif, Georgia, serif;
+  
+  /* Premium Easing Curve for standardizing smooth animations */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
   :root {
-    --background: #F8F8F5;
-    --foreground: #111111;
+    --background: #FAF8F4;
+    --foreground: #1D1D1D;
   }
 
   body {
     /* overflow-x-hidden is crucial for mobile to prevent side-scrolling! */
-    @apply bg-offwhite text-text-main font-sans antialiased overflow-x-hidden selection:bg-forest selection:text-white;
+    @apply bg-offwhite text-text-main font-sans antialiased overflow-x-hidden selection:bg-gold/30 selection:text-charcoal;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold tracking-tight;
+    /* Luxury serifs look much more premium at medium/normal weights rather than heavy bold */
+    @apply font-heading font-medium tracking-tight text-balance text-charcoal;
+  }
+  
+  p {
+    /* Improved readability and breathing room for body copy */
+    @apply leading-relaxed tracking-[0.01em];
   }
 }
 
 @layer utilities {
+  /* Apple-Level Glassmorphism */
   .glass-card {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.04)];
+    @apply bg-white/40 backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_rgba(29,29,29,0.06)];
   }
 
   .glass-panel {
-    @apply bg-offwhite/70 backdrop-blur-xl border border-white/40 shadow-xl;
+    @apply bg-offwhite/80 backdrop-blur-3xl border border-white/50 shadow-[0_12px_48px_rgba(29,29,29,0.08)];
+  }
+  
+  /* Subtle Film Grain Texture for Luxury Feel */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   }
 
-  /* Great for headings on mobile */
   .text-balance {
     text-wrap: balance;
   }
   
-  /* Great for paragraphs on mobile */
   .text-pretty {
     text-wrap: pretty;
   }

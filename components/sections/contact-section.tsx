@@ -2,96 +2,116 @@
 
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="relative py-16 md:py-32 bg-background z-40">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative">
-        <div className="flex flex-col lg:flex-row gap-10 md:gap-16">
+    <section id="contact" className="relative py-24 md:py-32 bg-offwhite z-40">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-8 relative">
+        <div className="flex flex-col lg:flex-row gap-16 md:gap-20 lg:gap-24">
           
           {/* Left: Contact Info */}
-          <div className="w-full lg:w-5/12">
+          <div className="w-full lg:w-5/12 flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-4 md:mb-6">
-                Let's <span className="text-primary italic font-serif">Connect</span>
+              <span className="text-gold font-sans font-medium tracking-[0.2em] uppercase text-xs md:text-sm mb-4 block">
+                Begin Your Journey
+              </span>
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-medium text-charcoal mb-6 md:mb-8 tracking-tighter leading-[1.1]">
+                Let's <span className="text-forest italic font-heading pr-2">Connect</span>
               </h2>
-              <p className="text-textMuted text-base md:text-lg mb-8 md:mb-12">
-                Have a specific destination in mind or need inspiration? Reach out to our travel architects.
+              <p className="text-charcoal/70 text-base md:text-lg mb-12 md:mb-16 font-sans tracking-wide leading-relaxed">
+                Have a specific destination in mind or need inspiration? Reach out to our travel architects to begin crafting your next masterpiece.
               </p>
 
-              <div className="space-y-6 md:space-y-8">
-                <div className="flex items-center gap-4 md:gap-6 group">
-                  <div className="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-white glass-card flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Mail className="text-primary w-5 h-5 md:w-6 md:h-6" />
+              <div className="space-y-8 md:space-y-10">
+                <div className="flex items-center gap-6 group cursor-default">
+                  <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_8px_16px_rgba(29,29,29,0.04)] group-hover:scale-110 group-hover:shadow-[0_16px_32px_rgba(29,29,29,0.08)] transition-all duration-700 ease-[0.16,1,0.3,1]">
+                    <Mail className="text-gold w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <span className="block text-xs md:text-sm font-bold text-textMuted uppercase tracking-widest mb-1">Email Us</span>
-                    <a href="mailto:concierge@luxe.com" className="text-lg md:text-xl font-medium text-dark hover:text-accent transition-colors break-all md:break-normal">concierge@luxe.com</a>
+                    <span className="block text-[10px] md:text-xs font-sans font-medium text-charcoal/50 uppercase tracking-[0.2em] mb-1">Email Us</span>
+                    <a href="mailto:concierge@luxe.com" className="text-lg md:text-xl font-heading font-medium text-charcoal hover:text-gold transition-colors duration-300">concierge@luxe.com</a>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4 md:gap-6 group">
-                  <div className="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-white glass-card flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Phone className="text-primary w-5 h-5 md:w-6 md:h-6" />
+                <div className="flex items-center gap-6 group cursor-default">
+                  <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_8px_16px_rgba(29,29,29,0.04)] group-hover:scale-110 group-hover:shadow-[0_16px_32px_rgba(29,29,29,0.08)] transition-all duration-700 ease-[0.16,1,0.3,1]">
+                    <Phone className="text-gold w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <span className="block text-xs md:text-sm font-bold text-textMuted uppercase tracking-widest mb-1">Call Us</span>
-                    <a href="tel:+18005550199" className="text-lg md:text-xl font-medium text-dark hover:text-accent transition-colors">+1 (800) 555-0199</a>
+                    <span className="block text-[10px] md:text-xs font-sans font-medium text-charcoal/50 uppercase tracking-[0.2em] mb-1">Call Us</span>
+                    <a href="tel:+18005550199" className="text-lg md:text-xl font-heading font-medium text-charcoal hover:text-gold transition-colors duration-300">+1 (800) 555-0199</a>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 md:gap-6 group">
-                  <div className="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-full bg-white glass-card flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <MapPin className="text-primary w-5 h-5 md:w-6 md:h-6" />
+                <div className="flex items-center gap-6 group cursor-default">
+                  <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_8px_16px_rgba(29,29,29,0.04)] group-hover:scale-110 group-hover:shadow-[0_16px_32px_rgba(29,29,29,0.08)] transition-all duration-700 ease-[0.16,1,0.3,1]">
+                    <MapPin className="text-gold w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <span className="block text-xs md:text-sm font-bold text-textMuted uppercase tracking-widest mb-1">Headquarters</span>
-                    <span className="text-lg md:text-xl font-medium text-dark">Geneva, Switzerland</span>
+                    <span className="block text-[10px] md:text-xs font-sans font-medium text-charcoal/50 uppercase tracking-[0.2em] mb-1">Headquarters</span>
+                    <span className="text-lg md:text-xl font-heading font-medium text-charcoal">Geneva, Switzerland</span>
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Right: Glass Form */}
+          {/* Right: Premium Glass Form */}
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="w-full lg:w-7/12"
           >
-            <form className="glass-card bg-white/60 p-6 sm:p-8 md:p-12 rounded-card shadow-xl border border-white/80">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mb-4 md:mb-8">
-                <div>
-                  <label className="block text-sm font-bold text-dark mb-1.5 md:mb-2">First Name</label>
-                  <input type="text" className="w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" placeholder="John" />
+            <form className="glass-card p-8 sm:p-10 md:p-12 rounded-[32px] shadow-[0_24px_64px_rgba(29,29,29,0.08)] border border-white/60">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
+                <div className="group">
+                  <label className="block text-[10px] font-sans font-medium text-charcoal/60 uppercase tracking-[0.2em] mb-2.5 transition-colors group-focus-within:text-gold">First Name</label>
+                  <input 
+                    type="text" 
+                    className="w-full bg-white/40 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm md:text-base font-sans text-charcoal focus:outline-none focus:bg-white focus:border-gold/50 focus:ring-4 focus:ring-gold/10 transition-all duration-500 placeholder:text-charcoal/30" 
+                    placeholder="John" 
+                  />
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-dark mb-1.5 md:mb-2">Last Name</label>
-                  <input type="text" className="w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Doe" />
+                <div className="group">
+                  <label className="block text-[10px] font-sans font-medium text-charcoal/60 uppercase tracking-[0.2em] mb-2.5 transition-colors group-focus-within:text-gold">Last Name</label>
+                  <input 
+                    type="text" 
+                    className="w-full bg-white/40 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm md:text-base font-sans text-charcoal focus:outline-none focus:bg-white focus:border-gold/50 focus:ring-4 focus:ring-gold/10 transition-all duration-500 placeholder:text-charcoal/30" 
+                    placeholder="Doe" 
+                  />
                 </div>
               </div>
               
-              <div className="mb-4 md:mb-8">
-                <label className="block text-sm font-bold text-dark mb-1.5 md:mb-2">Email Address</label>
-                <input type="email" className="w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" placeholder="john@example.com" />
+              <div className="mb-6 md:mb-8 group">
+                <label className="block text-[10px] font-sans font-medium text-charcoal/60 uppercase tracking-[0.2em] mb-2.5 transition-colors group-focus-within:text-gold">Email Address</label>
+                <input 
+                  type="email" 
+                  className="w-full bg-white/40 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm md:text-base font-sans text-charcoal focus:outline-none focus:bg-white focus:border-gold/50 focus:ring-4 focus:ring-gold/10 transition-all duration-500 placeholder:text-charcoal/30" 
+                  placeholder="john@example.com" 
+                />
               </div>
 
-              <div className="mb-6 md:mb-8">
-                <label className="block text-sm font-bold text-dark mb-1.5 md:mb-2">Your Journey Details</label>
-                <textarea rows={4} className="w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none" placeholder="Tell us about your dream destination, dates, and preferences..." />
+              <div className="mb-8 md:mb-10 group">
+                <label className="block text-[10px] font-sans font-medium text-charcoal/60 uppercase tracking-[0.2em] mb-2.5 transition-colors group-focus-within:text-gold">Your Journey Details</label>
+                <textarea 
+                  rows={4} 
+                  className="w-full bg-white/40 border border-charcoal/10 rounded-2xl px-5 py-4 text-sm md:text-base font-sans text-charcoal focus:outline-none focus:bg-white focus:border-gold/50 focus:ring-4 focus:ring-gold/10 transition-all duration-500 resize-none placeholder:text-charcoal/30" 
+                  placeholder="Tell us about your dream destination, preferred dates, and specific requirements..." 
+                />
               </div>
 
-              <button type="button" className="w-full bg-[#1B1B1B] text-white rounded-2xl py-3.5 md:py-4 font-bold tracking-wide text-sm md:text-base hover:bg-[#1F5E45] transition-colors flex items-center justify-center gap-2 group">
+              <Button size="lg" className="w-full group">
                 Send Request
-                <Send className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
+                <Send className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+              </Button>
             </form>
           </motion.div>
 

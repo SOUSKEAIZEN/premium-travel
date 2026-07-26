@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Clock, Star, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const destinations = [
   {
@@ -32,96 +33,111 @@ const destinations = [
 
 export default function Destinations() {
   return (
-    <section className="relative py-16 md:py-32 bg-dark text-background z-40 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8">
+    <section className="relative py-24 md:py-32 bg-charcoal text-offwhite z-40 overflow-hidden">
+      
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-gold/5 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-6 md:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-20 gap-8">
           <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl font-bold mb-3 md:mb-4">
+            <span className="text-gold font-sans font-medium tracking-[0.2em] uppercase text-xs md:text-sm mb-4 block">
+              Curated Escapes
+            </span>
+            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-medium mb-4 tracking-tighter leading-[1.1]">
               Featured <br className="md:hidden" />
-              <span className="text-accent italic font-serif">Destinations</span>
+              <span className="text-gold italic font-heading pr-2">Destinations</span>
             </h2>
-            <p className="text-textMuted max-w-md text-base md:text-lg">
+            <p className="text-offwhite/60 max-w-md text-base md:text-lg font-sans">
               Explore our most highly-rated journeys, hand-picked for the upcoming season.
             </p>
           </motion.div>
           
-          {/* UPGRADED BUTTON DESIGN */}
-          <motion.button 
-             initial={{ opacity: 0, x: 40 }}
-             whileInView={{ opacity: 1, x: 0 }}
-             viewport={{ once: true, margin: "-100px" }}
-             transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-             className="w-full md:w-auto justify-center group flex items-center gap-3 px-6 py-3 md:py-4 rounded-button border border-accent/50 text-accent font-medium tracking-wide hover:bg-accent hover:text-dark transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.05)] hover:shadow-[0_0_25px_rgba(212,175,55,0.2)] text-sm md:text-base"
+          {/* Action Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            View All Destinations
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
-          </motion.button>
+            <Button variant="glass" size="lg" className="w-full md:w-auto group text-charcoal">
+              View All Destinations
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300 ml-1" />
+            </Button>
+          </motion.div>
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {destinations.map((dest, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: index * 0.2, ease: [0.76, 0, 0.24, 1] }}
-              className="group relative h-[420px] md:h-[500px] rounded-card overflow-hidden cursor-pointer border border-white/5"
+              transition={{ duration: 1, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="group relative h-[480px] md:h-[540px] rounded-[32px] overflow-hidden cursor-pointer border border-white/10 shadow-[0_24px_64px_rgba(0,0,0,0.4)]"
             >
               {/* Background Image with Hover Zoom */}
-              <div className="absolute inset-0 w-full h-full">
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
                 <img 
                   src={dest.image} 
                   alt={dest.title}
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] md:group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-[1.2s] ease-[0.16,1,0.3,1] group-hover:scale-105"
                 />
               </div>
               
-              {/* Gradient Overlay - Made slightly darker on mobile by default for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 md:via-black/40 to-transparent transition-opacity duration-500 md:group-hover:opacity-90" />
+              {/* Cinematic Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-95" />
               
               {/* Content Overlay */}
-              <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
-                {/* Rating Badge */}
-                <div className="absolute top-6 right-6 md:top-8 md:right-8 glass-card bg-white/10 px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-md">
-                  <Star size={14} className="text-accent fill-accent" />
-                  <span className="text-xs md:text-sm font-bold text-white">{dest.rating}</span>
+              <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                
+                {/* Top Bar: Rating Badge */}
+                <div className="flex justify-end">
+                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-3.5 py-1.5 rounded-full flex items-center gap-1.5">
+                    <Star size={14} className="text-gold fill-gold" />
+                    <span className="text-xs md:text-sm font-medium text-offwhite tracking-wide">{dest.rating}</span>
+                  </div>
                 </div>
 
-                {/* Details Container */}
-                <div className="transform transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] md:group-hover:-translate-y-16">
-                  <div className="flex items-center gap-2 text-accent mb-2">
-                    <MapPin className="w-[14px] h-[14px] md:w-4 md:h-4" />
-                    <span className="text-xs md:text-sm tracking-widest uppercase font-bold">{dest.country}</span>
+                {/* Bottom Bar: Details */}
+                <div className="transform transition-transform duration-500 ease-[0.16,1,0.3,1] md:group-hover:-translate-y-4">
+                  <div className="flex items-center gap-2 text-gold mb-3">
+                    <MapPin className="w-4 h-4" />
+                    <span className="text-xs font-sans tracking-[0.2em] uppercase font-medium">{dest.country}</span>
                   </div>
-                  <h3 className="font-heading text-2xl md:text-3xl font-bold text-white mb-2 md:mb-4">{dest.title}</h3>
                   
-                  {/* Hidden Details (Visible by default on mobile, revealed on hover on desktop) */}
-                  <div className="flex items-center gap-4 md:gap-6 overflow-hidden h-auto opacity-100 mt-2 md:mt-0 md:h-0 md:opacity-0 md:group-hover:h-auto md:group-hover:opacity-100 md:group-hover:mt-2 transition-all duration-500 delay-100">
-                    <div className="flex items-center gap-2 text-white/80 text-sm">
-                      <Clock size={14} />
+                  <h3 className="font-heading text-3xl font-medium text-offwhite mb-4 tracking-tight">
+                    {dest.title}
+                  </h3>
+                  
+                  {/* Metadata & CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                    <div className="flex items-center gap-2 text-offwhite/70 text-sm font-sans">
+                      <Clock size={15} className="text-gold" />
                       <span>{dest.duration}</span>
                     </div>
-                    <div className="text-accent font-bold text-sm md:text-base">
-                      {dest.price} <span className="text-white/50 font-normal text-xs md:text-sm">/ person</span>
+                    <div className="text-offwhite font-medium text-base">
+                      {dest.price} <span className="text-offwhite/40 font-normal text-xs">/ person</span>
                     </div>
+                  </div>
+
+                  {/* Reveal Button on Desktop Hover / Always Accessible on Mobile */}
+                  <div className="mt-6 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500">
+                    <Button variant="glass" size="sm" className="w-full bg-white/20 hover:bg-white text-offwhite hover:text-charcoal border-white/30">
+                      View Itinerary
+                    </Button>
                   </div>
                 </div>
 
-                {/* Hover Button (Visible by default on mobile, revealed on hover on desktop) */}
-                <div className="mt-6 md:mt-0 relative md:absolute md:bottom-8 md:left-8 md:right-8 opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-500 delay-200">
-                  <button className="w-full py-3 md:py-3.5 bg-white text-dark rounded-button font-bold text-sm hover:bg-accent transition-colors duration-300">
-                    View Itinerary
-                  </button>
-                </div>
               </div>
             </motion.div>
           ))}

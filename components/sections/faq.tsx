@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const faqs = [
   {
@@ -27,22 +27,28 @@ export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative py-16 md:py-32 bg-background z-40">
-      <div className="max-w-[800px] mx-auto px-4 md:px-8">
+    <section className="relative py-24 md:py-32 bg-offwhite z-40 overflow-hidden border-t border-charcoal/5">
+      <div className="max-w-[800px] mx-auto px-6 md:px-8 relative z-10">
         
-        <div className="text-center mb-10 md:mb-16">
-          <motion.h2 
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-dark mb-3 md:mb-4"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            Common <span className="text-primary italic font-serif">Inquiries</span>
-          </motion.h2>
+            <span className="text-gold font-sans font-medium tracking-[0.2em] uppercase text-xs md:text-sm mb-4 block">
+              Clarity & Confidence
+            </span>
+            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-medium text-charcoal mb-4 tracking-tighter leading-[1.1]">
+              Common <span className="text-forest italic font-heading pr-1">Inquiries</span>
+            </h2>
+          </motion.div>
         </div>
 
-        <div className="space-y-4">
+        {/* Accordion List */}
+        <div className="space-y-4 md:space-y-6">
           {faqs.map((faq, index) => {
             const isActive = activeIndex === index;
             
@@ -52,30 +58,34 @@ export default function FAQ() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card bg-white/40 border border-black/5 rounded-card overflow-hidden"
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="glass-card border border-charcoal/5 rounded-[24px] overflow-hidden transition-colors duration-500 hover:bg-white/60"
               >
                 <button
                   onClick={() => setActiveIndex(isActive ? null : index)}
-                  className="w-full flex items-center justify-between p-5 md:p-8 text-left hover:bg-white/50 transition-colors"
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left focus:outline-none group"
                 >
-                  <span className={`font-heading text-lg md:text-xl font-bold transition-colors duration-300 pr-4 ${isActive ? "text-primary" : "text-dark"}`}>
+                  <span className={`font-heading text-lg md:text-xl font-medium tracking-tight transition-colors duration-500 pr-6 ${isActive ? "text-forest" : "text-charcoal group-hover:text-forest"}`}>
                     {faq.question}
                   </span>
-                  <div className="shrink-0 text-accent">
-                    {isActive ? <Minus className="w-5 h-5 md:w-6 md:h-6" /> : <Plus className="w-5 h-5 md:w-6 md:h-6" />}
-                  </div>
+                  <motion.div 
+                    animate={{ rotate: isActive ? 45 : 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className={`shrink-0 flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-500 ${isActive ? "bg-forest/10 text-forest" : "bg-gold/10 text-gold group-hover:bg-gold/20"}`}
+                  >
+                    <Plus className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
+                  </motion.div>
                 </button>
                 
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {isActive && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <div className="px-5 md:px-8 pb-6 md:pb-8 pt-0 text-sm md:text-base text-textMuted leading-relaxed">
+                      <div className="px-6 md:px-8 pb-8 pt-0 text-sm md:text-base text-charcoal/70 leading-relaxed font-sans">
                         {faq.answer}
                       </div>
                     </motion.div>

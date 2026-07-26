@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Cormorant_Garamond } from "next/font/google";
 import { SmoothScrolling } from "@/components/providers/smooth-scrolling";
 import CustomCursor from "@/components/ui/cursor";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+// Clean, modern body font
+const inter = Inter({ 
+  subsets: ["latin"], 
+  variable: "--font-sans-primary",
+  display: "swap",
+});
+
+// Elegant, highly editorial serif for headings
+const cormorant = Cormorant_Garamond({ 
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"], 
+  variable: "--font-serif-primary",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Premium Travel | Your Journey Begins",
-  description: "Experience the world's most luxurious destinations.",
+  title: "LUXE. | Extraordinary Journeys",
+  description: "Architects of extraordinary journeys for the modern explorer. Experience the world without compromise.",
 };
 
 export default function RootLayout({
@@ -17,13 +30,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans cursor-none`}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.variable} ${cormorant.variable} font-sans md:cursor-none`}>
+        
+        {/* Global Premium Film Grain Overlay */}
+        <div 
+          className="pointer-events-none fixed inset-0 z-[9999999] bg-grain mix-blend-multiply" 
+          aria-hidden="true" 
+        />
+
         {/* Global Premium Custom Cursor */}
         <CustomCursor />
         
-        {/* The top JourneyProgress bar has been removed from here */}
-
         <SmoothScrolling>
           {children}
         </SmoothScrolling>

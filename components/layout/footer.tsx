@@ -19,7 +19,7 @@ export default function Footer() {
     }
   }, [isInView, badgeDismissed]);
 
-  // 2. NEW: Auto-dismiss the badge 2 seconds after it appears
+  // 2. Auto-dismiss the badge 2 seconds after it appears
   useEffect(() => {
     if (showBadge) {
       const timer = setTimeout(() => {
@@ -27,77 +27,88 @@ export default function Footer() {
         setBadgeDismissed(true);
       }, 2000);
       
-      // Cleanup timer if the user manually clicks close before 2 seconds
       return () => clearTimeout(timer);
     }
   }, [showBadge]);
 
   return (
-    <footer ref={footerRef} className="relative bg-[#1B1B1B] text-white/70 pt-20 md:pt-32 pb-8 md:pb-12 overflow-hidden z-40">
+    <footer ref={footerRef} className="relative bg-charcoal text-offwhite/70 pt-24 md:pt-32 pb-8 md:pb-12 overflow-hidden z-40">
       
-      {/* Animated Top Wave/Border */}
+      {/* Animated Top Wave/Border - Calibrated for subtle luxury */}
       <motion.div 
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute top-0 left-0 w-[200%] h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"
+        className="absolute top-0 left-0 w-[200%] h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent"
       />
 
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-20">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-16 mb-16 md:mb-24">
           
+          {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
-            <h3 className="font-heading font-bold text-xl md:text-2xl tracking-widest text-white mb-4 md:mb-6">
-              LUXE<span className="text-[#D4AF37]">.</span>
+            <h3 className="font-heading font-medium text-2xl md:text-3xl tracking-[0.15em] text-offwhite mb-4 md:mb-6">
+              LUXE<span className="text-gold">.</span>
             </h3>
-            <p className="text-sm leading-relaxed max-w-xs">
+            <p className="text-sm leading-relaxed max-w-xs tracking-wide">
               Architects of extraordinary journeys for the modern explorer. Experience the world without compromise.
             </p>
           </div>
 
+          {/* Navigation */}
           <div>
-            <h4 className="font-bold text-white mb-4 md:mb-6 uppercase tracking-widest text-sm">Navigation</h4>
-            <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-[#D4AF37] transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Destinations</a></li>
-              <li><a href="#contact" className="hover:text-[#D4AF37] transition-colors">Contact</a></li>
+            <h4 className="font-sans font-medium text-offwhite mb-6 uppercase tracking-[0.15em] text-xs">Navigation</h4>
+            <ul className="space-y-4 text-sm">
+              <li><a href="#" className="hover:text-gold transition-colors duration-300">Home</a></li>
+              <li><a href="#about" className="hover:text-gold transition-colors duration-300">About Us</a></li>
+              <li><a href="#" className="hover:text-gold transition-colors duration-300">Destinations</a></li>
+              <li><a href="#contact" className="hover:text-gold transition-colors duration-300">Contact</a></li>
             </ul>
           </div>
 
+          {/* Legal */}
           <div>
-            <h4 className="font-bold text-white mb-4 md:mb-6 uppercase tracking-widest text-sm">Legal</h4>
-            <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Booking Conditions</a></li>
+            <h4 className="font-sans font-medium text-offwhite mb-6 uppercase tracking-[0.15em] text-xs">Legal</h4>
+            <ul className="space-y-4 text-sm">
+              <li><a href="#" className="hover:text-gold transition-colors duration-300">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-gold transition-colors duration-300">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-gold transition-colors duration-300">Booking Conditions</a></li>
             </ul>
           </div>
 
+          {/* Newsletter */}
           <div>
-            <h4 className="font-bold text-white mb-4 md:mb-6 uppercase tracking-widest text-sm">Newsletter</h4>
-            <p className="text-sm mb-4">Curated inspiration delivered to your inbox.</p>
-            <div className="flex bg-white/5 rounded-xl p-1 border border-white/10 focus-within:border-[#D4AF37]/50 transition-colors">
-              <input type="email" placeholder="Email address" className="bg-transparent w-full px-3 md:px-4 text-sm text-white focus:outline-none placeholder:text-white/30" />
-              <button className="bg-white text-[#1B1B1B] px-3 md:px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#D4AF37] transition-colors">
+            <h4 className="font-sans font-medium text-offwhite mb-6 uppercase tracking-[0.15em] text-xs">Newsletter</h4>
+            <p className="text-sm mb-5 tracking-wide">Curated inspiration delivered to your inbox.</p>
+            {/* Premium Capsule Input */}
+            <div className="flex bg-white/5 rounded-full p-1.5 border border-white/10 focus-within:border-gold/50 focus-within:bg-white/10 transition-all duration-500">
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                className="bg-transparent w-full px-4 text-sm text-offwhite focus:outline-none placeholder:text-offwhite/30" 
+              />
+              <button className="bg-offwhite text-charcoal px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gold hover:text-white transition-colors duration-300 tracking-wide">
                 Join
               </button>
             </div>
           </div>
         </div>
 
-        <div className="pt-6 md:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left">
-          <p className="text-xs md:text-sm order-2 md:order-1">© {new Date().getFullYear()} Luxe Travel. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 text-center md:text-left">
+          <p className="text-xs md:text-sm order-2 md:order-1 tracking-wide">
+            © {new Date().getFullYear()} Luxe Travel. All rights reserved.
+          </p>
           
           <div className="flex gap-4 order-1 md:order-2">
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#D4AF37] hover:text-[#1B1B1B] transition-all duration-300 text-xs font-bold tracking-widest">
-              IG
-            </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#D4AF37] hover:text-[#1B1B1B] transition-all duration-300 text-xs font-bold tracking-widest">
-              TW
-            </a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-[#D4AF37] hover:text-[#1B1B1B] transition-all duration-300 text-xs font-bold tracking-widest">
-              IN
-            </a>
+            {["IG", "TW", "IN"].map((social) => (
+              <a 
+                key={social}
+                href="#" 
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:bg-gold/10 hover:border-gold/40 hover:text-gold transition-all duration-500 text-xs font-medium tracking-widest"
+              >
+                {social}
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -106,20 +117,21 @@ export default function Footer() {
       <AnimatePresence>
         {showBadge && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8, x: 50 }}
-            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[100] max-w-[calc(100vw-2rem)] md:max-w-md glass-card bg-[#1B1B1B]/90 backdrop-blur-xl border border-[#D4AF37]/40 p-3 md:p-4 rounded-card shadow-2xl flex items-center gap-3 md:gap-4 group"
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] max-w-[calc(100vw-3rem)] md:max-w-md bg-charcoal/80 backdrop-blur-2xl border border-gold/30 p-4 md:p-5 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.4)] flex items-center gap-4 group"
           >
-            <div className="text-2xl md:text-3xl filter drop-shadow-md group-hover:scale-110 transition-transform duration-300">
+            <div className="text-3xl filter drop-shadow-lg group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
               🏆
             </div>
-            <div className="pr-6">
-              <h4 className="font-heading font-bold text-white text-xs md:text-sm uppercase tracking-wider mb-0.5">
+            <div className="pr-8">
+              <h4 className="font-sans font-medium text-offwhite text-xs md:text-sm uppercase tracking-[0.15em] mb-1">
                 Explorer Badge
               </h4>
-              <p className="text-[10px] md:text-xs text-white/60 leading-tight">
-                You reached the end of the journey!
+              <p className="text-[11px] md:text-xs text-offwhite/60 leading-relaxed tracking-wide">
+                You reached the end of the journey.
               </p>
             </div>
             
@@ -128,9 +140,9 @@ export default function Footer() {
                 setShowBadge(false);
                 setBadgeDismissed(true);
               }}
-              className="absolute top-2 right-2 p-1 text-white/40 hover:text-white transition-colors"
+              className="absolute top-3 right-3 p-1.5 text-offwhite/40 hover:text-offwhite hover:bg-white/10 rounded-full transition-all duration-300"
             >
-              <X size={14} />
+              <X className="w-4 h-4" />
             </button>
           </motion.div>
         )}
